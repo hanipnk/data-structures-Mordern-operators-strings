@@ -1,5 +1,7 @@
 'use strict';
 
+/*
+
 // Data needed for a later exercise
 const flights =
   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
@@ -42,7 +44,104 @@ const restaurant = {
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with${ing1},${ing2} and ${ing3}`);
   },
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
 };
+
+restaurant.numGuests = 0; // since '0' is faulsy value, result will be '10'
+
+const guests = restaurant.numGuests || 10;
+console.log(guests);
+
+// Nullish -> null and undefined (NOT 0 or '')
+// Only null and undefined would be considered as faulsy values
+const guestCorrect = restaurant.numGuests ?? 10;
+console.log(guestCorrect);
+
+
+
+console.log('-------------OR--------------');
+//Use ANY data type, return ANY data type, short-circuiting
+
+// short-circuiting -> if the first value is a truthy value, i will immediately return the first value
+console.log(3 || 'Jonas');
+console.log('' || 'Jonas');
+console.log(true || 0);
+console.log(undefined || null);
+// even though 'null' is a faulty value since undefined is also a faulty value and the first value,
+// it just immediately return the second value.
+
+console.log(undefined || 0 || '' || 'Hello' || 23 || null);
+//it returns the first truthy value in this chain of OR operations. ('Hello')
+
+restaurant.numGuests = 0; // since '0' is faulsy value, result will be '10'
+const guests1 = restaurant.numGuests ? restaurant.numGuests : 10;
+console.log(guests1);
+
+const guests2 = restaurant.numGuests || 10;
+console.log(guests2);
+
+console.log('-------------AND--------------');
+
+console.log(0 && 'Jonas'); // result of '0'
+console.log(7 && 'Jonas'); // 'Jonas'
+console.log('Hello' && 23 && null && 'jonas'); //null
+// every value has to bo the truthy values with'&&'. it stops curcuiting when faulsy value comes 'null'
+
+// Practical example
+if (restaurant.orderPizza) {
+  restaurant.orderPizza('mushrooms', 'spinach');
+}
+// if restaurant.orderPizza is exist, return ->restaurant.orderPizza('mushrooms', 'spinach');
+
+restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');
+// if first operand is true (restaurant.orderPizza), execute code in the second operand -> restaurant.orderPizza('mushrooms', 'spinach');
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// 1) Destructuring (Arrays)
+//SPREAD, because it's on the RIGHT side of '='
+const arr = [1, 2, ...[3, 4]];
+
+// REST, because it's LEFT dife of '='
+const [a, b, ...others] = [1, 2, 3, 4, 5];
+console.log(a, b, others);
+
+//Using SPREAD and REST operator at the same time
+
+const [pizza, , risotto, ...otherFood] = [
+  // have to create new variable names and followed by the order of arrays (in arrays)
+  ...restaurant.mainMenu,
+  ...restaurant.starterMenu,
+];
+console.log(pizza, risotto, otherFood);
+
+// Destructuring (Objects)
+const { sat, ...weekdays } = restaurant.openingHours;
+console.log(weekdays);
+
+// 2) Functions
+
+const add = function (...numbers) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) sum = sum + numbers[i];
+  console.log(sum);
+};
+
+add(2, 3);
+add(5, 3, 7, 2);
+add(8, 2, 5, 3, 2, 1, 4);
+
+const x = [23, 5, 7];
+add(...x); // SPREAD operator
+
+restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
+restaurant.orderPizza('mushrooms');
+
+
 
 // Spread Operator (similar to destructuring but does not create new variables.)
 
@@ -101,7 +200,7 @@ restaurantCopy.name = 'Ristorante Roma';
 console.log(restaurantCopy.name);
 console.log(restaurant.name);
 
-/*
+
 
 // Destructuring Objects
 
@@ -191,3 +290,88 @@ const [p = 1, q = 1, r = 1] = [8, 9];
 console.log(p, q, r);
 
 */
+
+// Coding Challenge # 1
+
+const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
+  players: [
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
+  ],
+  score: '4:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  date: 'Nov 9th, 2037',
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
+};
+
+const [players1, players2] = game.players;
+
+console.log(players1, players2);
+
+const [gk, ...fieldPlayers] = players1;
+console.log(gk, fieldPlayers);
+
+const [gk2, ...fieldPlayers2] = players2;
+console.log(gk2, fieldPlayers2);
+
+const allplayers = [...players1, ...players2];
+console.log(allplayers);
+
+const players1Final = [...players1, 'Thiago', 'Coutingo', 'Perisic'];
+console.log(players1Final);
+
+const { team1 } = game.odds;
+console.log(team1);
+
+const { team2 } = game.odds;
+console.log(team2);
+
+const { x: draw } = game.odds;
+console.log(draw);
+
+// const {                                               <- solution
+//   odds: { team1, x: draw, team2 },
+// } = game;
+// console.log(team1, draw, team2);
+
+const printGoals = function (...playerNames) {
+  const total = playerNames.length;
+  for (let i = 0; i < playerNames.length; i++) {
+    console.log(playerNames[i]);
+  }
+  console.log(total);
+};
+printGoals(...game.scored);
+
+team1 < team2 && console.log('Team 1 is more likely to win');
+team1 > team2 && console.log('Team 1 is more likely to win');
