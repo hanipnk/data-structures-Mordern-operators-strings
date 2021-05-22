@@ -1,10 +1,25 @@
 'use strict';
 
-/*
-
 // Data needed for a later exercise
 const flights =
   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+const openingHours = {
+  [weekdays[3]]: {
+    open: 12,
+    close: 22,
+  },
+  [weekdays[4]]: {
+    open: 11,
+    close: 23,
+  },
+  [weekdays[5]]: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
 
 // Data needed for first part of the section
 const restaurant = {
@@ -14,23 +29,18 @@ const restaurant = {
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
-  order: function (starterIndex, mainIndex) {
+  //openingHours : openingHours <--- Old way
+  //ES6 enhanced object literals
+  openingHours,
+
+  // order: function (starterIndex, mainIndex) {
+  //   return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  // },
+  order(starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
+  // I can remove 'function' with ES6 enhanced object literals
+
   orderDelivery: function ({
     starterIndex = 1,
     mainIndex = 0,
@@ -49,6 +59,90 @@ const restaurant = {
     console.log(otherIngredients);
   },
 };
+
+// Property Names
+const properties = Object.keys(openingHours); // keys = properties in objects
+console.log(properties); // -> (3) ["thu", "fri", "sat"]
+
+let openStr = `we are open on ${properties.length} days: `;
+for (const day of properties) {
+  openStr = openStr + `${day}, `;
+}
+console.log(openStr);
+
+//Property VALUES
+const values = Object.values(openingHours);
+console.log(values);
+
+// Entire Object
+const entries = Object.entries(openingHours);
+console.log(entries);
+
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day} we open at ${open} and close at ${close}`);
+}
+/*
+
+//Optional Chaining
+
+// I want to know if ( 'a' && 'b' ) is exist, if yes - > console.log('c')
+if (restaurant.openingHours && restaurant.openingHours.mon)
+  console.log(restaurant.openingHours.mon.open);
+
+//WITH optional chaining  (?.)
+console.log(restaurant.openingHours.mon?.open);
+// If before '?.' exists, then excute after '?.'
+// If before '?.' does not exist, 'undefined' will be returned immediately
+console.log(restaurant.openingHours?.mon?.open);
+
+// Example of optional chaining  (with Nullish operator '??' )
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`on ${day}, we open at ${open}`);
+}
+
+// Optional chaining (?.) in Methods
+
+console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist');
+// if before '?.' exist, excute after '?.'
+// if before '?.' does not exist return after '??' (if it is null or undefined NOT '0')
+
+// Optional chaining (?.) in Arrays
+const users = [
+  {
+    name: 'Jonas',
+    email: 'hello@jonas.io',
+  },
+];
+//const users = [];
+console.log(users[0]?.name ?? 'User array empty');
+
+// without using Optional chaining (?.)
+if (users.length > 0) console.log(users[0].name);
+else console.log('user array empty');
+
+*/
+
+/* 
+
+// 'For of loop' 
+
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+for (const item of menu) console.log(item);
+
+for (const [i, el] of menu.entries()) {
+  // to see the current index of each elements
+  // Destructuring of the array  'const [i, el]'
+  console.log(`${i + 1}:${el}`);
+}
+
+console.log([...menu.entries()]);
+
+*/
+
+/*
 
 restaurant.numGuests = 0; // since '0' is faulsy value, result will be '10'
 
@@ -291,6 +385,7 @@ console.log(p, q, r);
 
 */
 
+/*
 // Coding Challenge # 1
 
 const game = {
@@ -375,3 +470,48 @@ printGoals(...game.scored);
 
 team1 < team2 && console.log('Team 1 is more likely to win');
 team1 > team2 && console.log('Team 1 is more likely to win');
+
+*/
+
+// Coding Challenge #2
+
+const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
+  players: [
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
+  ],
+  score: '4:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  date: 'Nov 9th, 2037',
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
+};
