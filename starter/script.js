@@ -59,7 +59,7 @@ const restaurant = {
     console.log(otherIngredients);
   },
 };
-
+/*
 // Property Names
 const properties = Object.keys(openingHours); // keys = properties in objects
 console.log(properties); // -> (3) ["thu", "fri", "sat"]
@@ -81,6 +81,7 @@ console.log(entries);
 for (const [day, { open, close }] of entries) {
   console.log(`On ${day} we open at ${open} and close at ${close}`);
 }
+*/
 /*
 
 //Optional Chaining
@@ -125,9 +126,9 @@ else console.log('user array empty');
 
 */
 
-/* 
+// 'For of loop'
 
-// 'For of loop' 
+/*
 
 const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
 for (const item of menu) console.log(item);
@@ -135,6 +136,7 @@ for (const item of menu) console.log(item);
 for (const [i, el] of menu.entries()) {
   // to see the current index of each elements
   // Destructuring of the array  'const [i, el]'
+  console.log(i);
   console.log(`${i + 1}:${el}`);
 }
 
@@ -515,3 +517,63 @@ const game = {
     team2: 6.5,
   },
 };
+//const entry = Object.entries(game.scored);
+//console.log(entry);
+// for (const [goals, player] of entry) {
+//   console.log(goals);
+//   const numgoals = Number(goals);
+//   console.log(`Goal ${numgoals + 1} : ${player}`);
+// }
+
+for (const [goals, player] of game.scored.entries()) {
+  // if I want to get 'index' of 'game.scored' I use 'entries()'
+  console.log(` Goal ${goals + 1} : ${player}`);
+}
+
+const odds = Object.values(game.odds);
+let average = 0;
+for (const odd of odds) {
+  average = average + odd;
+}
+average = average / odds.length;
+console.log(average);
+
+const oddaverage = Object.values(game.odds);
+console.log(oddaverage);
+
+let sum = 0;
+for (let i = 0; i < oddaverage.length; i++) {
+  sum = sum + oddaverage[i];
+}
+sum = sum / oddaverage.length;
+
+console.log(sum);
+
+// const eachodd = Object.entries(game.odds);
+// console.log(eachodd);
+
+// for (const [team, point] of eachodd) {
+//   console.log(`Odd of victory ${team}, ${point}`);
+// }
+
+for (const [team, odd] of Object.entries(game.odds)) {
+  //console.log(team, odd);
+  const teamStr = team === 'x' ? 'draw' : `victory ${game[team]}`; // '[]' for variable name
+  console.log(`Odd of ${teamStr} : ${odd}`);
+}
+
+const scorers = {}; // how to add elements into the empty object? -> objectName.key(propertyname) = value
+//scorers.id = 1;
+//console.log(scorers);
+for (const player of game.scored) {
+  //console.log(player);
+  scorers[player] ? scorers[player]++ : (scorers[player] = 1); // I use '[]' for variables otherwise '.'
+}
+console.log(scorers);
+
+// BONUS
+// So the solution is to loop over the array, and add the array elements as object properties, and then increase the count as we encounter a new occurence of a certain element
+// const scorers = {};
+// for (const player of game.scored) {
+//   scorers[player] ? scorers[player]++ : (scorers[player] = 1);
+// }
